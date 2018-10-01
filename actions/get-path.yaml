@@ -1,0 +1,13 @@
+---
+  name: get-path
+  runner_type: python-script
+  description: "Example action that takes a windows path, storing the result in the database."
+  enabled: true
+  entry_point: get-path.py
+  parameters:
+    path:
+      type: string
+      description: "A path. Use a Windows style path."
+      required: true
+      position: 0
+

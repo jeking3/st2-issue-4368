@@ -1,0 +1,12 @@
+---
+  name: get-path-workflow
+  runner_type: mistral-v2
+  entry_point: workflows/get-path-workflow.yaml
+  enabled: true
+  description: "Demonstrate incorrect backslash handling."
+  parameters:
+    path:
+      type: string
+      description: "A windows style path (with backslashes)."
+      required: true
+      position: 0

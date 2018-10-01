@@ -1,0 +1,30 @@
+version: '2.0'
+
+backslash.get-path-workflow:
+  description: Demonstrate bad backslash handling.
+  type: direct
+  input:
+    - path
+  tasks:
+    get_path_1:
+      action: backslash.get-path
+      input:
+        path: <% $.path %>
+      publish:
+        resultpath1: <% task(get_path_1).result.result %>
+      on-success:
+        - get_path_2
+    get_path_2:
+      action: backslash.get-path
+      input:
+        path: <% $.resultpath1 %>
+      publish:
+        resultpath2: <% task(get_path_2).result.result %>
+      on-success:
+        - get_path_3
+    get_path_3:
+      action: backslash.get-path
+      input:
+        path: <% $.resultpath2 %>
+      publish:
+        resultpath3: <% task(get_path_3).result.result %>
