@@ -1,7 +1,7 @@
 ---
-  name: get-path-workflow
-  runner_type: mistral-v2
-  entry_point: workflows/get-path-workflow.yaml
+  name: orquesta-workflow
+  runner_type: orquesta
+  entry_point: workflows/orquesta-workflow.yaml
   enabled: true
   description: "Demonstrate incorrect backslash handling."
   parameters:

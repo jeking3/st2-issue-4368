@@ -1,6 +1,6 @@
 version: '2.0'
 
-backslash.get-path-workflow:
+backslash.mistral-workflow:
   description: Demonstrate bad backslash handling.
   type: direct
   input:

@@ -1,0 +1,34 @@
+version: '1.0'
+
+description: Demonstrate bad backslash handling.
+
+input:
+  - path
+
+tasks:
+  get_path_1:
+    action: backslash.get-path
+    input:
+      path: <% ctx(path) %>
+    next:
+      - when: <% succeeded() %>
+        publish: resultpath1=<% result().result %>
+        do: get_path_2
+  get_path_2:
+    action: backslash.get-path
+    input:
+      path: <% ctx(resultpath1) %>
+    next:
+      - when: <% succeeded() %>
+        publish: resultpath2=<% result().result %>
+        do: get_path_3
+  get_path_3:
+    action: backslash.get-path
+    input:
+      path: <% ctx(resultpath2) %>
+    next:
+      - when: <% succeeded() %>
+        publish: resultpath3=<% result().result %>
+
+output:
+  - result: <% ctx(resultpath3) %>
