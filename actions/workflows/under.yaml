@@ -1,0 +1,12 @@
+version: '1.0'
+
+description: Demonstrate task names with dashes break things.
+
+tasks:
+  task_1:
+    action: core.noop
+    next:
+      - do: task_2
+  task_2:
+    action: core.noop
+

@@ -1,0 +1,6 @@
+---
+  name: dash
+  runner_type: orquesta
+  entry_point: workflows/dash.yaml
+  enabled: true
+  description: "Demonstrate orquesta task names cannot have a dash in them."
