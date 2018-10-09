@@ -1,7 +1,9 @@
 ---
 ref: backslash
 name: backslash
-description: Demonstrates incorrect backslash handling.
-version: 0.0.1
+description: Demonstrates various GitHub issues.
+version: 0.0.4
 author: James E. King III
 email: jking@apache.org
+stackstorm_version: ">=2.9.0"
+

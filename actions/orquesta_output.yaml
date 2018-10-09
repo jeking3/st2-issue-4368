@@ -1,0 +1,12 @@
+---
+  name: orquesta_output
+  runner_type: orquesta
+  entry_point: workflows/orquesta_output.yaml
+  enabled: true
+  description: "Demonstrate handling of fail directive drops output processing."
+  parameters:
+      succeed:
+          type: boolean
+          description: If true, the workflow succeeds.
+          required: true
+          position: 0

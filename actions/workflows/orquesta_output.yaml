@@ -1,0 +1,68 @@
+version: '1.0'
+
+description: Demonstrate how the fail directive causes output processing to get dropped.
+
+input:
+  - succeed
+
+vars:
+  - process_exit_code: -1
+  - process_pid: -1
+  - process_stdout: ''
+  - process_stderr: ''
+
+# We want the output of this workflow to look like an action that ran a command
+output:
+  - exit_code: <% ctx().process_exit_code %>
+  - stdout: <% ctx().process_stdout %>
+  - stderr: <% ctx().process_stderr %>
+
+tasks:
+  # This might be starting a process on a remote computer through an API
+  # That API might redirect stdout and stderr to files
+  pretend_to_start_command:
+    action: core.noop
+    next:
+      - when: <% succeeded() %>
+        publish:
+          - process_pid: 12345
+        do: pretend_to_wait_for_process
+
+  # Wait for this fictitious process to end and record the exit code
+  pretend_to_wait_for_process:
+    action: core.local
+    input:
+      cmd: <% ctx().succeed and "true" or "false" %>
+    next:
+      - publish:
+        - process_exit_code: <% ctx().succeed and 0 or 4 %>
+        do: pretend_to_grab_stdout
+
+  # This fictitious API forces us to grab stdout from a file through an API
+  # NOTE: This ALWAYS happens, whether pretend_to_wait_for_process succeeds or fails
+  pretend_to_grab_stdout:
+    action: core.noop
+    next:
+      - publish:
+        - process_stdout: <% ctx().succeed and 'standard output says horray!' or '' %>
+        do: pretend_to_grab_stderr
+
+  # This fictitious API forces us to grab stderr from a file through an API
+  # NOTE: This ALWAYS happens, whether pretend_to_wait_for_process succeeds or fails
+  pretend_to_grab_stderr:
+    action: core.noop
+    next:
+      - publish:
+        - process_stderr: <% (not ctx().succeed and 'error code 4') or '' %>
+        do: pretend_to_cleanup
+
+  # The API forces us to call something to cleanup the environment
+  # NOTE: This ALWAYS happens, whether pretend_to_wait_for_process succeeds or fails
+  #       If this cleanup action succeeds, the workflow will succeed unless we
+  #       specifically tell it to fail with the "do: fail" directive.  However if we
+  #       do that, all the output processing is lost.
+  pretend_to_cleanup:
+    action: core.noop
+    next:
+      - when: <% ctx().process_exit_code != 0 %>
+        do: fail
