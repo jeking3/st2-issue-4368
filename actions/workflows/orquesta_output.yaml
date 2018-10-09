@@ -35,7 +35,7 @@ tasks:
       cmd: <% ctx().succeed and "true" or "false" %>
     next:
       - publish:
-        - process_exit_code: <% ctx().succeed and 0 or 4 %>
+        - process_exit_code: <% ctx().succeed and '0' or 4 %>
         do: pretend_to_grab_stdout
 
   # This fictitious API forces us to grab stdout from a file through an API
@@ -64,5 +64,5 @@ tasks:
   pretend_to_cleanup:
     action: core.noop
     next:
-      - when: <% ctx().process_exit_code != 0 %>
+      - when: <% ctx().process_exit_code != '0' %>
         do: fail
